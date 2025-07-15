@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Beneficios W</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Import SheetJS for Excel files -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script type="importmap">
+    {
+      "imports": {
+        "./utils.js": "./utils.js",
+        "./auth.js": "./auth.js",
+        "./user-panel.js": "./user-panel.js",
+        "./admin-panel.js": "./admin-panel.js",
+        "./storage.js": "./storage.js"
+      }
+    }
+    </script>
+</head>
+<body>
+<div class="centered-container" id="main-container">
+    <div class="box" id="login-box">
+        <div class="brand-header">
+            <img src="/W-Santiago (1).png" alt="Logo W Santiago">
+        </div>
+        <h1 class="title">Beneficios W</h1>
+        <form id="login-form" autocomplete="off">
+            <div class="input-group">
+                <label>RUT:</label>
+                <input type="text" name="rut" id="rut-input" maxlength="12" placeholder="12345678-9" required pattern="\d{7,8}-[\dkK]">
+            </div>
+            <div class="input-group">
+                <label>Contraseña:</label>
+                <input type="password" name="password" id="password-input" maxlength="4" placeholder="4 primeros dígitos del RUT" required>
+            </div>
+            <div class="error-message" id="login-error" style="display:none;"></div>
+            <button type="submit">Ingresar</button>
+        </form>
+    </div>
+
+    <div class="box" id="user-box" style="display:none;">
+        <button class="logout-btn" id="logout-btn-user">Cerrar sesión</button>
+        <div class="brand-header">
+            <img src="/W-Santiago (1).png" alt="Logo W Santiago">
+        </div>
+        <h1 class="title">Bienvenido/a, <span id="user-name"></span></h1>
+        <div id="solicitud-section">
+            <!-- User service request form rendered by user-panel.js -->
+        </div>
+    </div>
+
+    <div class="admin-section" id="admin-panel" style="display:none;">
+        <!-- Admin panel content rendered by admin-panel.js -->
+    </div>
+</div>
+<script type="module">
+import { initAuth } from "./auth.js";
+import { renderUserPanel } from "./user-panel.js";
+import { renderAdminPanel } from "./admin-panel.js";
+import { loadLocalData } from "./storage.js";
+
+window.addEventListener('DOMContentLoaded', ()=>{
+    loadLocalData();
+    initAuth({
+        onUserLogin: renderUserPanel,
+        onAdminLogin: renderAdminPanel
+    });
+});
+</script>
+</body>
+</html>
